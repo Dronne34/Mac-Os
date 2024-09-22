@@ -1,10 +1,14 @@
+# import = ["/Users/ciprian/.config/alacritty/style/ayu.toml"]
 import = ["/Users/ciprian/.config/alacritty/style/dracula.toml"]
+# import = ["/Users/ciprian/.config/alacritty/style/citylights.toml"]
+
+
 [env]
 TERM = "xterm-256color"
 
 [window]
- # padding.x = 10
- # padding.y = 10
+ padding.x = 10
+ padding.y = 10
  startup_mode = "Maximized"
  title = "Alacritty"
 # position = {x = 30, y = 20}
