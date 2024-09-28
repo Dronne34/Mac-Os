@@ -8,6 +8,7 @@ endif
 """"""""""""""""""""
 " set scrolloff=30
 " autocmd VimEnter * stopinsert
+" General Settings
 " autocmd VimLeave * startinsert
 " set tabstop=4
 syntax enable
@@ -16,9 +17,9 @@ filetype on
 filetype plugin on
 filetype indent on
 let g:rehash256 = 1
-set clipboard=unnamedplus       " Copy/paste between vim and other programs.
+" set clipboard=unnamedplus       " Copy/paste between vim and other programs.
 set number relativenumber       " Display line numbers
-set termguicolors
+" set termguicolors
 set number
 set hidden                      " Needed to keep multiple buffers open
 set nobackup                    " No auto backups
