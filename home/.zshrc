@@ -17,12 +17,10 @@ source ~/.bash_alias
 
 # export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export MANPAGER="less -R --use-color -Dd+g -Du+b"
+export MANROFFOPT="-P -c"
 
 # Homebrew
-export HOMEBREW_NO_INSTALL_CLEANUP
-export HOMEBREW_NO_ENV_HINTS
-
-export MANROFFOPT="-P -c"
+$HOME/.homebrew/brew.env
 
 
 # export HISTCHARS="tmx^tmk^ls"
@@ -135,7 +133,7 @@ source $ZSH/oh-my-zsh.sh
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 # export PATH=~/.local/shell:$PATH
 export PATH=~/.local/bin:$PATH
-# export PATH=~/Applications:$PATH
+export PATH=~/Script:$PATH
 # chmod +x ~/.local/shell/*
 # chmod +x ~/.local/bin/*
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
