@@ -21,7 +21,7 @@ export MANROFFOPT="-P -c"
 
 # Homebrew
 $HOME/.homebrew/brew.env
-
+export HOMEBREW_NO_INSTALL_CLEANUP=1
 
 # export HISTCHARS="tmx^tmk^ls"
 setopt HIST_IGNORE_ALL_DUPS
@@ -93,6 +93,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git zsh-syntax-highlighting zsh-autosuggestions)
+
 fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
 FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
 
@@ -156,8 +157,8 @@ export LC_CTYPE="en_US.UTF-8"
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
 
-export PYTHONPATH="${PYTHONPATH}:/Users/ciprian/Library/Python/3.9/bin"
-export PATH="${PATH}:/Users/ciprian/Library/Python/3.9/bin"
+# export PYTHONPATH="${PYTHONPATH}:/Users/ciprian/Library/Python/3.9/bin"
+# export PATH="${PATH}:/Users/ciprian/Library/Python/3.9/bin"
 
 if type brew &>/dev/null
 then
@@ -166,3 +167,9 @@ then
   autoload -Uz compinit
   compinit
 fi
+# source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# source /Users/mac-cip/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+ 
+# completion using arrow keys (based on history)
+bindkey '^[[A' history-search-backward
+bindkey '^[[B' history-search-forward
