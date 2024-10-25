@@ -3,19 +3,24 @@
  # You can use it to add commands that run after AeroSpace startup.
  # 'after-startup-command' is run after 'after-login-command'
  # Available commands : https://nikitabobko.github.io/AeroSpace/commands
- after-startup-command = [
-  #  'exec-and-forget borders active_color=#00ffff inactive_color=0xff494d64 width=1.0'
- ]
+after-startup-command = [
+  'exec-and-forget borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=0.5'
+]
  # Start AeroSpace at login
  start-at-login = true
  # Normalizations. See: https://nikitabobko.github.io/AeroSpace/guide#normalization
  enable-normalization-flatten-containers = true
  enable-normalization-opposite-orientation-for-nested-containers = true
- non-empty-workspaces-root-containers-layout-on-startup = 'smart'
+#  non-empty-workspaces-root-containers-layout-on-startup = 'smart'
  # See: https://nikitabobko.github.io/AeroSpace/guide#layouts
  # The 'accordion-padding' specifies the size of accordion padding
  # You can set 0 to disable the padding feature
  accordion-padding = 30
+
+# exec-on-workspace-change = ['/bin/bash', '-c',
+  # 'WIN=$(aerospace list-windows --all | grep "<Window Title>" | cut -d" " -f1); [ -n "$WIN" ] && aerospace move-node-to-workspace --window-id "$WIN" "$AEROSPACE_FOCUSED_WORKSPACE"'
+# ]
+ 
  # Possible values: tiles|accordion
  default-root-container-layout = 'tiles'
  # Possible values: horizontal|vertical|auto
@@ -69,12 +74,13 @@
  #  end tell'
  # '''
 # cmd-shift-h = 'move left'
-cmd-h = [] # Disable "hide application"
-cmd-alt-h = [] # Disable "hide others"
-cmd-shift-p = [
-  'move-node-to-monitor --wrap-around next',
-  'focus-monitor next --wrap-around' 
-]
+# cmd-h = [] # Disable "hide application"
+# cmd-alt-h = [] # Disable "hide others"
+# cmd-shift-p = [
+  # 'move-node-to-monitor --wrap-around next',
+  # 'focus-monitor next --wrap-around' 
+# ]
+
  alt-enter = 'exec-and-forget open -n /Applications/Alacritty.app'
  alt-shift-m = 'exec-and-forget /bin/bash -c /Users/mac-cip/.local/bin/focus.sh'
 
@@ -83,19 +89,31 @@ cmd-shift-p = [
  alt-comma = 'layout accordion horizontal vertical'
  alt-e = 'layout tiles horizontal vertical' # 'layout toggle split' in i3
  
+ 
  # Add keybind to fullscreen a window
  # Under the main binding mode I like to add this keybind to fullscreen a window:
  alt-shift-s = 'fullscreen'
  # See: https://nikitabobko.github.io/AeroSpace/commands#focus
- alt-h = 'focus left'
- alt-j = 'focus down'
- alt-k = 'focus up'
- alt-l = 'focus right'
- # See: https://nikitabobko.github.io/AeroSpace/commands#move
- cmd-shift-h = 'move left'
- cmd-shift-j = 'move down'
- cmd-shift-k = 'move up'
- cmd-shift-l = 'move right'
+ cmd-h = 'focus left'
+ cmd-j = 'focus down'
+ cmd-k = 'focus up'
+ cmd-l = 'focus right'
+
+
+alt-shift-h = ['move left', 'resize smart +150', 'focus left']
+alt-shift-j = 'move down'
+alt-shift-k = 'move up'
+alt-shift-l = ['move right', 'resize smart -150', 'focus right']
+
+ # Swap Stacks with Single
+alt-shift-ctrl-h = ['focus left', 'move right', 'move right', 'focus left']
+alt-shift-ctrl-l = ['focus right', 'move left', 'move left', 'focus right']
+
+alt-shift-ctrl-k = ['focus left', 'move down', 'move down', 'focus left']
+alt-shift-ctrl-j = ['focus right', 'move up', 'move up', 'focus right']
+
+# alt-tab = 'list-workspaces --all | workspace next'
+
  # See: https://nikitabobko.github.io/AeroSpace/commands#resize
  alt-shift-minus = 'resize smart -100'
  alt-shift-equal = 'resize smart +100'
@@ -105,18 +123,18 @@ cmd-shift-p = [
  alt-3 = 'workspace 3'
  alt-4 = 'workspace 4'
  alt-5 = 'workspace 5'
- alt-6 = 'workspace C'
- alt-7 = 'workspace B'
- alt-8 = 'workspace T'
+ alt-c = 'workspace C'
+ alt-b = 'workspace B'
+ alt-t = 'workspace T'
  # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
- alt-shift-1 = 'move-node-to-workspace 1'
- alt-shift-2 = 'move-node-to-workspace 2'
- alt-shift-3 = 'move-node-to-workspace 3'
- alt-shift-4 = 'move-node-to-workspace 4'
- alt-shift-5 = 'move-node-to-workspace 5'
- alt-shift-6 = 'move-node-to-workspace C'
- alt-shift-7 = 'move-node-to-workspace B'
- alt-shift-8 = 'move-node-to-workspace T'
+ alt-shift-1 = 'move-node-to-workspace 1 --focus-follows-window'
+ alt-shift-2 = 'move-node-to-workspace 2 --focus-follows-window'
+ alt-shift-3 = 'move-node-to-workspace 3 --focus-follows-window'
+ alt-shift-4 = 'move-node-to-workspace 4 --focus-follows-window'
+ alt-shift-5 = 'move-node-to-workspace 5 --focus-follows-window'
+ alt-shift-6 = 'move-node-to-workspace C --focus-follows-window'
+ alt-shift-7 = 'move-node-to-workspace B --focus-follows-window'
+ alt-shift-8 = 'move-node-to-workspace T --focus-follows-window'
 
  # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
  alt-tab = 'workspace-back-and-forth'
@@ -133,10 +151,10 @@ cmd-shift-p = [
  #s = ['layout sticky tiling', 'mode main'] # sticky is not yet supported https://github.com/nikitabobko/AeroSpace/issues/2
  f = ['layout floating tiling', 'mode main'] # Toggle between floating and tiling layout
  backspace = ['close-all-windows-but-current', 'mode main']
- alt-shift-h = ['join-with left', 'mode main']
- alt-shift-j = ['join-with down', 'mode main']
- alt-shift-k = ['join-with up', 'mode main']
- alt-shift-l = ['join-with right', 'mode main']
+alt-shift-h = ['join-with left', 'mode main']
+alt-shift-j = ['join-with down', 'mode main']
+alt-shift-k = ['join-with up', 'mode main']
+alt-shift-l = ['join-with right', 'mode main']
 
  [[on-window-detected]]
  if.app-id = 'org.alacritty'
@@ -161,4 +179,9 @@ run = 'layout floating'
 [[on-window-detected]]
 if.app-id = 'com.apple.ActivityMonitor'
 run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.sublimetext.4'
+run = 'move-node-to-workspace C'
+
       
