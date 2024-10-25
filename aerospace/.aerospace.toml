@@ -81,7 +81,7 @@ after-startup-command = [
   # 'focus-monitor next --wrap-around' 
 # ]
 
- alt-enter = 'exec-and-forget open -n /Applications/Alacritty.app'
+ alt-enter = 'exec-and-forget open -n /Applications/iterm2.app'
  alt-shift-m = 'exec-and-forget /bin/bash -c /Users/mac-cip/.local/bin/focus.sh'
 
  # See: https://nikitabobko.github.io/AeroSpace/commands#layout
