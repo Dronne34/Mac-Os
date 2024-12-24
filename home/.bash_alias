@@ -7,7 +7,7 @@ alias tma='tmux a'
 alias tms='tmux list-sessions'	
 alias tmk='tmux kill-server'
 
-#alias r='ranger'	
+alias r='ranger'	
 # alias n='nnn -a -e -Pt'
 alias nnn="nnn -ed -a -H -T v/d/e/r/s/t/a -Pt"
 alias ll='lsd  -la --color=auto'
@@ -115,7 +115,7 @@ alias vbm="sudo mount -t vboxsf -o rw,uid=1000,gid=1000 Public /home/$USER/Publi
 
 #alias media
 alias px="xprop"
-alias r="python3 ~/.local/bin/ranger/ranger.py"
+# alias r="python3 ~/.local/bin/ranger/ranger.py"
 alias ra="cd .local/bin/pyradion/ && python3 pyradion.py && cd"
 alias rg="mpv https://greudedifuzat.ro/stream/"
 
@@ -125,8 +125,8 @@ alias ping='ping google.com -c5'
 alias play='mplayer -msgcolor -msgmodule -nolirc'
 alias playlist='mplayer -msgcolor -msgmodule -nolirc -playlist '
 alias twitch='mpv --ytdl-raw-options=config-location=~/.config/yt-dlp/config'
-alias yta-mp3='youtube-dl --extract-audio  -f bestaudio --audio-format mp3 --embed-thumbnail --prefer-ffmpeg --output "%(title)s.%(ext)s" '
-alias yta-m4a="youtube-dl --extract-audio --audio-format m4a "
+alias yta-mp3='yt-dlp --extract-audio  -f bestaudio --audio-format mp3 --embed-thumbnail --prefer-ffmpeg --output "%(title)s.%(ext)s" '
+alias yta-m4a="yt-dlp --extract-audio --audio-format m4a "
 
 # get error messages from journalctl
 alias jctl="journalctl -p 3 -xb"
@@ -217,5 +217,7 @@ alias vmt="vim .tmux.conf"
 alias bs="brew search"
 alias bi="brew install"
 alias bif="brew info"
+alias meld="open -W -a Meld $@"
+
 
 }

@@ -6,7 +6,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -20,8 +20,10 @@ export MANPAGER="less -R --use-color -Dd+g -Du+b"
 export MANROFFOPT="-P -c"
 
 # Homebrew
-$HOME/.homebrew/brew.env
-export HOMEBREW_NO_INSTALL_CLEANUP=1
+# $HOME/.homebrew/brew.env
+export HOMEBREW_NO_INSTALL_CLEANUP="1"
+export HOMEBREW_NO_AUTO_UPDATE="1"
+
 
 # export HISTCHARS="tmx^tmk^ls"
 setopt HIST_IGNORE_ALL_DUPS
@@ -92,7 +94,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-syntax-highlighting zsh-autosuggestions)
+plugins=(git zsh-syntax-highlighting zsh-autosuggestions brew)
 
 fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
 FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
@@ -138,7 +140,7 @@ export PATH=~/Script:$PATH
 # chmod +x ~/.local/shell/*
 # chmod +x ~/.local/bin/*
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
-pfetch
+# pfetch
 
 # Use colors for less, man, etc.
 [[ -f ~/.LESS_TERMCAP ]] && . ~/.LESS_TERMCAP
@@ -169,7 +171,9 @@ then
 fi
 # source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # source /Users/mac-cip/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /opt/homebrew/share/zsh-navigation-tools/zsh-navigation-tools.plugin.zsh
+
  
 # completion using arrow keys (based on history)
-bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
+bindkey '^[[A' history-search-backward
