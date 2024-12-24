@@ -1,101 +1,175 @@
---[[
+-- thumbfast.lua
+--
+-- High-performance on-the-fly thumbnailer
+--
+-- Built for easy integration in third-party UIs.
 
-Automatically apply profiles based on runtime conditions.
-At least mpv 0.21.0 is required.
+local options = {
+    -- Socket path (leave empty for auto)
+    socket = "",
 
-This script queries the list of loaded config profiles, and checks the
-"profile-desc" field of each profile. If it starts with "cond:", the script
-parses the string as Lua expression, and evaluates it. If the expression
-returns true, the profile is applied, if it returns false, it is ignored.
+    -- Thumbnail path (leave empty for auto)
+    thumbnail = "",
 
-Expressions can reference properties by accessing "p". For example, "p.pause"
-would return the current pause status. If the variable name contains any "_"
-characters, they are turned into "-". For example, "playback_time" would
-return the property "playback-time". (Although you can also just write
-p["playback-time"].)
+    -- Maximum thumbnail size in pixels (scaled down to fit)
+    -- Values are scaled when hidpi is enabled
+    max_height = 200,
+    max_width = 200,
 
-Note that if a property is not available, it will return nil, which can cause
-errors if used in expressions. These are printed and ignored, and the
-expression is considered to be false. You can also write e.g.
-get("playback-time", 0) instead of p.playback_time to default to 0.
+    -- Overlay id
+    overlay_id = 42,
 
-Whenever a property referenced by a profile condition changes, the condition
-is re-evaluated. If the return value of the condition changes from false or
-error to true, the profile is applied.
+    -- Spawn thumbnailer on file load for faster initial thumbnails
+    spawn_first = false,
 
-Note that profiles cannot be "unapplied", so you may have to define inverse
-profiles with inverse conditions do undo a profile.
+    -- Enable on network playback
+    network = false,
 
-Using profile-desc is just a hack - maybe it will be changed later.
+    -- Enable on audio playback
+    audio = false,
 
-Supported --script-opts:
+    -- Enable hardware decoding
+    hwdec = false,
 
-    auto-profiles: if set to "no", the script disables itself (but will still
-                   listen to property notifications etc. - if you set it to
-                   "yes" again, it will re-evaluate the current state)
+    -- Windows only: use native Windows API to write to pipe (requires LuaJIT)
+    direct_io = false
+}
 
-Example profiles:
+mp.utils = require "mp.utils"
+mp.options = require "mp.options"
+mp.options.read_options(options, "thumbfast")
 
-# the profile names aren't used (except for logging), but must not clash with
-# other profiles
-[test]
-profile-desc=cond:p.playback_time>10
-video-zoom=2
+local pre_0_30_0 = mp.command_native_async == nil
 
-# you would need this to actually "unapply" the "test" profile
-[test-revert]
-profile-desc=cond:p.playback_time<=10
-video-zoom=0
+function subprocess(args, async, callback)
+    callback = callback or function() end
 
---]]
-
-local utils = require 'mp.utils'
-local msg = require 'mp.msg'
-
-local profiles = {}
-local watched_properties = {}   -- indexed by property name (used as a set)
-local cached_properties = {}    -- property name -> last known raw value
-local properties_to_profiles = {} -- property name -> set of profiles using it
-local have_dirty_profiles = false -- at least one profile is marked dirty
-
--- Used during evaluation of the profile condition, and should contain the
--- profile the condition is evaluated for.
-local current_profile = nil
-
-local function evaluate(profile)
-    msg.verbose("Re-evaluate auto profile " .. profile.name)
-
-    current_profile = profile
-    local status, res = pcall(profile.cond)
-    current_profile = nil
-
-    if not status then
-        -- errors can be "normal", e.g. in case properties are unavailable
-        msg.info("Error evaluating: " .. res)
-        res = false
-    elseif type(res) ~= "boolean" then
-        msg.error("Profile '" .. profile.name .. "' did not return a boolean.")
-        res = false
+    if not pre_0_30_0 then
+        if async then
+            return mp.command_native_async({name = "subprocess", playback_only = true, args = args}, callback)
+        else
+            return mp.command_native({name = "subprocess", playback_only = false, capture_stdout = true, args = args})
+        end
+    else
+        if async then
+            return mp.utils.subprocess_detached({args = args}, callback)
+        else
+            return mp.utils.subprocess({args = args})
+        end
     end
-    if res ~= profile.status and res == true then
-        msg.info("Applying profile " .. profile.name)
-        mp.commandv("apply-profile", profile.name)
-    end
-    profile.status = res
-    profile.dirty = false
 end
 
-local function on_property_change(name, val)
-    cached_properties[name] = val
-    -- Mark all profiles reading this property as dirty, so they get re-evaluated
-    -- the next time the script goes back to sleep.
-    local dependent_profiles = properties_to_profiles[name]
-    if dependent_profiles then
-        for profile, _ in pairs(dependent_profiles) do
-            assert(profile.cond) -- must be a profile table
-            profile.dirty = true
-            have_dirty_profiles = true
+local winapi = {}
+if options.direct_io then
+    local ffi_loaded, ffi = pcall(require, "ffi")
+    if ffi_loaded then
+        winapi = {
+            ffi = ffi,
+            C = ffi.C,
+            bit = require("bit"),
+            socket_wc = "",
+
+            -- WinAPI constants
+            CP_UTF8 = 65001,
+            GENERIC_WRITE = 0x40000000,
+            OPEN_EXISTING = 3,
+            FILE_FLAG_WRITE_THROUGH = 0x80000000,
+            FILE_FLAG_NO_BUFFERING = 0x20000000,
+            PIPE_NOWAIT = ffi.new("unsigned long[1]", 0x00000001),
+
+            INVALID_HANDLE_VALUE = ffi.cast("void*", -1),
+
+            -- don't care about how many bytes WriteFile wrote, so allocate something to store the result once
+            _lpNumberOfBytesWritten = ffi.new("unsigned long[1]"),
+        }
+        -- cache flags used in run() to avoid bor() call
+        winapi._createfile_pipe_flags = winapi.bit.bor(winapi.FILE_FLAG_WRITE_THROUGH, winapi.FILE_FLAG_NO_BUFFERING)
+
+        ffi.cdef[[
+            void* __stdcall CreateFileW(const wchar_t *lpFileName, unsigned long dwDesiredAccess, unsigned long dwShareMode, void *lpSecurityAttributes, unsigned long dwCreationDisposition, unsigned long dwFlagsAndAttributes, void *hTemplateFile);
+            bool __stdcall WriteFile(void *hFile, const void *lpBuffer, unsigned long nNumberOfBytesToWrite, unsigned long *lpNumberOfBytesWritten, void *lpOverlapped);
+            bool __stdcall CloseHandle(void *hObject);
+            bool __stdcall SetNamedPipeHandleState(void *hNamedPipe, unsigned long *lpMode, unsigned long *lpMaxCollectionCount, unsigned long *lpCollectDataTimeout);
+            int __stdcall MultiByteToWideChar(unsigned int CodePage, unsigned long dwFlags, const char *lpMultiByteStr, int cbMultiByte, wchar_t *lpWideCharStr, int cchWideChar);
+        ]]
+
+        winapi.MultiByteToWideChar = function(MultiByteStr)
+            if MultiByteStr then
+                local utf16_len = winapi.C.MultiByteToWideChar(winapi.CP_UTF8, 0, MultiByteStr, -1, nil, 0)
+                if utf16_len > 0 then
+                    local utf16_str = winapi.ffi.new("wchar_t[?]", utf16_len)
+                    if winapi.C.MultiByteToWideChar(winapi.CP_UTF8, 0, MultiByteStr, -1, utf16_str, utf16_len) > 0 then
+                        return utf16_str
+                    end
+                end
+            end
+            return ""
         end
+
+    else
+        options.direct_io = false
+    end
+end
+
+local spawned = false
+local network = false
+local disabled = false
+local spawn_waiting = false
+
+local x = nil
+local y = nil
+local last_x = x
+local last_y = y
+
+local last_seek_time = nil
+
+local effective_w = options.max_width
+local effective_h = options.max_height
+local real_w = nil
+local real_h = nil
+local last_real_w = nil
+local last_real_h = nil
+
+local script_name = nil
+
+local show_thumbnail = false
+
+local filters_reset = {["lavfi-crop"]=true, crop=true}
+local filters_runtime = {hflip=true, vflip=true}
+local filters_all = filters_runtime
+for k,v in pairs(filters_reset) do filters_all[k] = v end
+
+local last_vf_reset = ""
+local last_vf_runtime = ""
+
+local last_rotate = 0
+
+local par = ""
+local last_par = ""
+
+local last_has_vid = 0
+local has_vid = 0
+
+local file_timer = nil
+local file_check_period = 1/60
+local first_file = false
+
+local function debounce(func, wait)
+    func = type(func) == "function" and func or function() end
+    wait = type(wait) == "number" and wait / 1000 or 0
+
+    local timer = nil
+    local timer_end = function ()
+        timer:kill()
+        timer = nil
+        func()
+    end
+
+    return function ()
+        if timer then
+            timer:kill()
+        end
+        timer = mp.add_timeout(wait, timer_end)
     end
 end
 

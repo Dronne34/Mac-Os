@@ -12,10 +12,20 @@ after-login-command = []
 # You can use it to add commands that run after AeroSpace startup.
 # 'after-startup-command' is run after 'after-login-command'
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
-after-startup-command = []
+after-startup-command = [
+  # 'exec-and-forget borders active_color=0xff494d64 inactive_color=0xffe1e3e4 width=1.0'
+]
+
+
 
 # Start AeroSpace at login
 start-at-login = true
+
+ on-focus-changed = [
+  #  'move-mouse window-lazy-center',
+  #  'exec-and-forget /bin/bash -c /opt/homebrew/bin/sketchybar --trigger front_app_switched',
+  #  'exec-and-forget sketchybar --trigger update_windows'
+ ]
 
 # Normalizations. See: https://nikitabobko.github.io/AeroSpace/guide#normalization
 enable-normalization-flatten-containers = false
@@ -75,9 +85,18 @@ outer.right =      10
 # All possible commands: https://nikitabobko.github.io/AeroSpace/commands
 # You can uncomment this line to open up terminal with alt + enter shortcut
 # See: https://nikitabobko.github.io/AeroSpace/commands#exec-and-forget
+ctrl-alt-f = 'exec-and-forget open /System/Library/CoreServices/Finder.app'
 ctrl-enter = 'exec-and-forget open -n /Applications/Alacritty.app'
 ctrl-alt-b = "exec-and-forget open -n /Applications/'Brave Browser.app'"
-ctrl-alt-c = 'close --quit-if-last-window'
+ctrl-alt-s = "exec-and-forget open -n /Applications/'Sublime Text.app'"
+ctrl-alt-v = "exec-and-forget open -n /Applications/'Visual Studio Code.app'"
+
+# custom  key aerospace
+# ctrl-alt-right = 'exec-and-forget aerospace list-workspaces --monitor focused --empty no | aerospace move-node-to-workspace --fail-if-noop  --focus-follows-window 5 | aerospace resize smart -80'
+# ctrl-alt-left = 'exec-and-forget aerospace list-workspaces --monitor focused --empty no | aerospace move-node-to-workspace --focus-follows-window --wrap-around next'
+
+# https://nikitabobko.github.io/AeroSpace/commands#close
+ctrl-cmd-w = 'close --quit-if-last-window'
 
 # i3 wraps focus by default
 alt-j =         'focus --boundaries-action wrap-around-the-workspace left'
@@ -90,13 +109,15 @@ alt-v = 'split vertical'
 # See: https://nikitabobko.github.io/AeroSpace/commands#layout
 ctrl-slash = 'layout tiles horizontal vertical'
 ctrl-comma = 'layout accordion horizontal vertical'
-ctrl-shift-f = 'fullscreen --no-outer-gaps'
 
-# See: https://nikitabobko.github.io/AeroSpace/commands#focus
-ctrl-h = 'focus left'
-ctrl-j = 'focus down'
-ctrl-k = 'focus up'
-ctrl-l = 'focus right'
+# https://nikitabobko.github.io/AeroSpace/commands#macos-native-fullscreen
+ctrl-shift-f = 'macos-native-fullscreen'
+ctrl-f = 'fullscreen --no-outer-gaps'
+
+ctrl-h = 'focus left --ignore-floating'
+ctrl-j = 'focus down --ignore-floating'
+ctrl-k = 'focus up --ignore-floating'
+ctrl-l = 'focus right --ignore-floating'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move
 ctrl-cmd-h = 'move left'
@@ -105,8 +126,8 @@ ctrl-cmd-k = 'move up'
 ctrl-cmd-l = 'move right'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#resize
-ctrl-cmd-minus = 'resize smart -50'
-ctrl-cmd-equal = 'resize smart +50'
+ctrl-cmd-minus = 'resize smart +80'
+ctrl-cmd-equal = 'resize smart -80'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace
 cmd-1 = 'workspace 1'
@@ -127,7 +148,8 @@ ctrl-cmd-6 = 'move-node-to-workspace --focus-follows-window 6'
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
 ctrl-tab = 'workspace-back-and-forth'
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-workspace-to-monitor
-ctrl-shift-alt-cmd-tab = 'move-workspace-to-monitor --wrap-around next'
+# ctrl-shift-alt-cmd-tab = 'move-workspace-to-monitor --wrap-around next'
+ctrl-p = 'move-workspace-to-monitor --wrap-around next'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#mode
 ctrl-cmd-semicolon = 'mode service'
@@ -146,11 +168,7 @@ ctrl-alt-a = ['join-with down', 'mode main']
 ctrl-alt-o = ['join-with up', 'mode main']
 ctrl-alt-e = ['join-with right', 'mode main']
 
-[[on-window-detected]]
-if.app-id = 'com.thenounproject.Noun-Project'
-run = "layout floating"
-
-# System
+# System Preferences
 [[on-window-detected]]
 if.app-id = 'com.apple.systempreferences'
 run = "move-node-to-workspace 1"
@@ -170,11 +188,26 @@ run = "move-node-to-workspace 3"
 if.app-id = 'org.alacritty'
 run = "move-node-to-workspace 4"
 
+# Sublime Text
+[[on-window-detected]]
+if.app-id = 'com.sublimetext.4'
+run = "move-node-to-workspace 2"
+
+# AppStore
 [[on-window-detected]]
 if.app-id = 'com.apple.AppStore'
 run = ['layout floating', 'move-node-to-workspace 1']  # The callback itself
 
+# Finder
 [[on-window-detected]]
 if.app-id = 'com.apple.finder'
 run = ['layout floating', 'move-node-to-workspace 1']
+
+[workspace-to-monitor-force-assignment]
+1 = 1                            # Monitor sequence number from left to right. 1-based indexing
+2 = 'main'                       # Main monitor
+3 = 'secondary'                  # Non-main monitor in case when there are only two monitors
+4 = 'built-in'                   # Case insensitive regex substring
+5 = '^built-in retina display$'  # Case insensitive regex match
+6 = ['secondary', 'dell']        # You can specify multiple patterns. The first matching pattern will be used
 

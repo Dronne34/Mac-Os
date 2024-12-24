@@ -1,13 +1,13 @@
 # for this to work you must configure sudo such that
 # it will be able to run the command without password
 
-yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
-sudo yabai --load-sa
+# yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+# sudo yabai --load-sa
 
 # .. more yabai startup stuff
 
 # bsp or float (default: float)
-yabai -m config layout bsp
+# yabai -m config layout bsp
 
 # Override default layout for space 2 only
 # yabai -m config --space 2 layout float
