@@ -1,0 +1,11 @@
+background-opacity = 0.90
+unfocused-split-opacity = 0.80
+focus-follows-mouse = true
+macos-titlebar-style = hidden
+confirm-close-surface = false
+font-family = "MesloLGS NF Regular"
+font-size = 16
+theme = tokyonight-storm
+shell-integration = zsh
+quit-after-last-window-closed=true
+
