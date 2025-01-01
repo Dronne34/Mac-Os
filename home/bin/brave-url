@@ -1,0 +1,48 @@
+#!/bin/sh
+
+menu() {
+  printf "1. Archlinux.org\n"
+  printf "2. Github.com\n"
+  printf "3. Openai.com\n"
+  printf "4. Colorhexa.com\n"
+  printf "5. YouTube.com\n"
+  printf "6. Duckduckgo.com"
+}
+
+main() {
+  choice=$(menu | choose  -b ff79c6 -w 50 -n 7 -s 25 | cut -d. -f1)
+
+  case $choice in
+  1)
+    
+    open -n "/Applications/Brave Browser.app" "https://www.archlinux.org/"
+    break
+    ;;
+  2)
+    open -n "/Applications/Brave Browser.app" "https://github.com/login"
+    break
+    ;;
+  3)
+    
+    open -n "/Applications/Brave Browser.app" "https://chat.openai.com/chat"
+    break
+    ;;
+  4)
+    
+    open -n "/Applications/Brave Browser.app" "https://www.colorhexa.com/"
+    break
+    ;;
+  5)
+    
+    open -n "/Applications/Brave Browser.app" "https://www.youtube.com/"
+    break
+    ;;
+  6)
+    
+    open -n "/Applications/Brave Browser.app" "https://duckduckgo.com/"
+    break
+    ;;
+  esac
+}
+
+pkill -f http || main
