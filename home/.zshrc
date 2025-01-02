@@ -177,3 +177,4 @@ source /opt/homebrew/share/zsh-navigation-tools/zsh-navigation-tools.plugin.zsh
 # completion using arrow keys (based on history)
 bindkey '^[[B' history-search-forward
 bindkey '^[[A' history-search-backward
+eval "$(zoxide init zsh)"
