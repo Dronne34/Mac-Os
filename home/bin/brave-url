@@ -10,11 +10,11 @@ menu() {
 }
 
 main() {
-  choice=$(menu | choose  -b ff79c6 -w 50 -n 7 -s 25 | cut -d. -f1)
+  choice=$(menu | choose -b ff79c6 -w 50 -n 7 -s 25 | cut -d. -f1)
 
   case $choice in
   1)
-    
+
     open -n "/Applications/Brave Browser.app" "https://www.archlinux.org/"
     break
     ;;
@@ -23,23 +23,23 @@ main() {
     break
     ;;
   3)
-    
+
     open -n "/Applications/Brave Browser.app" "https://chat.openai.com/chat"
     break
     ;;
   4)
-    
+
     open -n "/Applications/Brave Browser.app" "https://www.colorhexa.com/"
     break
     ;;
   5)
-    
+
     open -n "/Applications/Brave Browser.app" "https://www.youtube.com/"
     break
     ;;
   6)
-    
-    open -n "/Applications/Brave Browser.app" "https://duckduckgo.com/"
+
+    open -n "/Applications/Brave Browser.app" ""
     break
     ;;
   esac
