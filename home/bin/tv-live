@@ -1,0 +1,61 @@
+#!/bin/sh
+
+menu() {
+  printf "1. 👉 Antena-1\n"
+  printf "2. 🆕 Pro TV HD\n"
+  printf "3. 📚 Discovery\n"
+  printf "4. 🏛️ Nat-Geo\n"
+  printf "5. 🏛️ Nat-Geo-Wild\n"
+  printf "6. ℹ️ Viasat-His\n"
+  printf "7. 🎬 Film-Cafe\n"
+  printf "8. 🎬 AMC"
+}
+
+main() {
+  choice=$(menu | choose -b ff79c6 -w 48 -n 9 -s 25 2>/dev/null | cut -d. -f1)
+
+  case $choice in
+  1)
+
+    streamlink "https://live3vox.antenaplay.ro/a3free/a3free.m3u8" best -p ffplay   
+    break
+    ;;
+  2)
+
+    streamlink "https://p13.magicplaces.eu/protv/tracks-v1a1/mono.m3u8?remote=no_check_ip&token=fb71a0d5670de6cf68679cab0a8a240a436f373e-c8ff7adedb15a4712163cf899a1098a2-1735937659-1735926859" best -p ffplay    
+    break
+    ;;
+  3)
+
+    streamlink --title "{author} - {category} - {title}" "https://p11.magicplaces.eu/discoverysd/tracks-v1a1/mono.m3u8?remote=no_check_ip&token=caee4121396281dac91be2503038bd40001982c4-965539e913fc025e379b034bbabc6bd2-1735854327-1735843527" best -p ffplay
+    break
+    ;;
+  4)
+
+    streamlink --title "{author} - {category} - {title}" "https://p11.magicplaces.eu/natgeo/tracks-v1a1/mono.m3u8?remote=no_check_ip&token=e5ccbd80b89237b27c9dccbddfe14f9d2c0a5a18-b85cb6e5cbf2322d3d31b42ad52d7850-1735854457-1735843657" best -p ffplay
+    break
+    ;;
+  5)
+
+    streamlink --title "{author} - {category} - {title}" "https://p11.magicplaces.eu/natgeowildsd/tracks-v1a1/mono.m3u8?remote=no_check_ip&token=492921dc084587dc2a50881eb5d71e34cf7488f3-2da64d245cc6518c3c6019ce7ba6c70c-1735854538-1735843738" best -p ffplay
+    break
+    ;;
+  6)
+
+    streamlink --title "{author} - {category} - {title}" "https://p11.magicplaces.eu/viasathistorysd/tracks-v1a1/mono.m3u8?remote=no_check_ip&token=261aa64f14efefc3a3fa832f9935cddad93b2f51-96f00ebea0d4266ca264f2d5be20a2a2-1735854760-1735843960" best -p ffplay
+    break
+    ;;
+  7)
+
+    streamlink --title "{author} - {category} - {title}" "https://p11.magicplaces.eu/filmcafesd/tracks-v1a1/mono.m3u8?remote=no_check_ip&token=eb3e492302b383af687c25d8624df16bdd1cf7f3-5cf18808f510556ac9ba987f413cd6c0-1735855620-1735844820" best -p ffplay
+    break
+    ;;
+  8)
+
+    streamlink --title "{author} - {category} - {title}" "https://p11.magicplaces.eu/amcsd/tracks-v1a1/mono.m3u8?remote=no_check_ip&token=9358eae6da60157fd9241e2c9438ebb5197b4fa0-26e8a3438d1e04a8482e79ebdfba9ab6-1735855303-1735844503" best -p ffplay
+    break
+    ;;
+  esac
+}
+
+pkill -f streamlink || main

@@ -1,48 +1,66 @@
 #!/bin/sh
 
 menu() {
-  printf "1. Archlinux.org\n"
-  printf "2. Github.com\n"
-  printf "3. Openai.com\n"
-  printf "4. Colorhexa.com\n"
-  printf "5. YouTube.com\n"
-  printf "6. Duckduckgo.com"
+  printf "1. 🔎 Duckduckgo.com\n"
+  printf "2. 🏛️ Archlinux.org\n"
+  printf "3. 🎁 Github.com\n"
+  printf "4. 🧠 Openai.com\n"
+  printf "5. 🟢 Colorhexa.com\n"
+  printf "6. 🔔 YouTube.com\n"
+  printf "7. 🌆 Wallhaven.cc\n"
+  printf "8. 🈯 Translate\n"
+  printf "9. 📩 Gmail\n"
+  printf "10.🍏 Apple"
 }
 
 main() {
-  choice=$(menu | choose -b ff79c6 -w 50 -n 7 -s 25 | cut -d. -f1)
+  choice=$(menu | choose -b ff79c6 -w 48 -n 11 -s 25 2>/dev/null | cut -d. -f1)
 
   case $choice in
   1)
-
-    open -n "/Applications/Brave Browser.app" "https://www.archlinux.org/"
-    break
-    ;;
-  2)
-    open -n "/Applications/Brave Browser.app" "https://github.com/login"
-    break
-    ;;
-  3)
-
-    open -n "/Applications/Brave Browser.app" "https://chat.openai.com/chat"
-    break
-    ;;
-  4)
-
-    open -n "/Applications/Brave Browser.app" "https://www.colorhexa.com/"
-    break
-    ;;
-  5)
-
-    open -n "/Applications/Brave Browser.app" "https://www.youtube.com/"
-    break
-    ;;
-  6)
-
+    # open -n "/Applications/Brave Browser.app" "https://duckduckgo.com/"
     open -n "/Applications/Brave Browser.app" ""
     break
     ;;
+  2)
+    open -n "/Applications/Brave Browser.app" "https://www.archlinux.org/"
+    break
+    ;;
+  3)
+    open -n "/Applications/Brave Browser.app" "https://github.com/login"
+    break
+    ;;
+  4)
+    open -n "/Applications/Brave Browser.app" "https://chat.openai.com/chat"
+    break
+    ;;
+  5)
+    open -n "/Applications/Brave Browser.app" "https://www.colorhexa.com/"
+    break
+    ;;
+  6)
+    open -n "/Applications/Brave Browser.app" "https://www.youtube.com/"
+    break
+    ;;
+  7)
+    open -n "/Applications/Brave Browser.app" "https://wallhaven.cc/"
+    break
+    ;;
+  8)
+    open -n "/Applications/Brave Browser.app" "https://translate.google.com/"
+    break
+    ;;
+  9)
+    open -n "/Applications/Brave Browser.app" "https://mail.google.com/mail/u/0/#inbox"
+    break
+    ;;
+  10)
+    open -n "/Applications/Brave Browser.app" "https://support.apple.com/ro-ro"
+    break
+    ;;
+
   esac
 }
 
-pkill -f http || main
+pkill -f "" || main
+# pkill -f "Brave Browser" || main

@@ -86,10 +86,18 @@ outer.right =      10
 # You can uncomment this line to open up terminal with alt + enter shortcut
 # See: https://nikitabobko.github.io/AeroSpace/commands#exec-and-forget
 ctrl-alt-f = 'exec-and-forget open /System/Library/CoreServices/Finder.app'
-ctrl-enter = 'exec-and-forget open -n /Applications/Alacritty.app'
-ctrl-alt-b = "exec-and-forget open -n /Applications/'Brave Browser.app'"
+# ctrl-enter = 'exec-and-forget open -n /Applications/Alacritty.app'
+# ctrl-alt-b = "exec-and-forget open -n /Applications/'Brave Browser.app'"
 ctrl-alt-s = "exec-and-forget open -n /Applications/'Sublime Text.app'"
 ctrl-alt-v = "exec-and-forget open -n /Applications/'Visual Studio Code.app'"
+ctrl-enter = 'exec-and-forget open -n /Applications/Ghostty.app/'
+ctrl-alt-l = 'exec-and-forget open -n /System/Applications/Launchpad.app'
+ctrl-alt-p = 'exec-and-forget /bin/bash -c /Users/ciprian/bin/lofi-beats'
+ctrl-alt-b = 'exec-and-forget /bin/bash -c /Users/ciprian/bin/brave-url'
+ctrl-alt-t = 'exec-and-forget /bin/bash -c /Users/ciprian/bin/tv-live'
+ctrl-alt-m = 'exec-and-forget /bin/bash -c /Users/ciprian/bin/sel-apps'
+ctrl-alt-q = 'exec-and-forget /bin/bash -c /Users/ciprian/bin/system.sh'
+ctrl-alt-r = 'exec-and-forget /bin/bash -c /Users/ciprian/bin/set_random_wallpaper.sh'
 
 # custom  key aerospace
 # ctrl-alt-right = 'exec-and-forget aerospace list-workspaces --monitor focused --empty no | aerospace move-node-to-workspace --fail-if-noop  --focus-follows-window 5 | aerospace resize smart -80'
@@ -173,6 +181,7 @@ ctrl-alt-e = ['join-with right', 'mode main']
 if.app-id = 'com.apple.systempreferences'
 run = "move-node-to-workspace 1"
 
+
 # Code
 [[on-window-detected]]
 if.app-id = 'com.microsoft.VSCode'
@@ -185,7 +194,7 @@ run = "move-node-to-workspace 3"
 
 # Alacritty
 [[on-window-detected]]
-if.app-id = 'org.alacritty'
+if.app-id = 'com.mitchellh.ghostty'
 run = "move-node-to-workspace 4"
 
 # Sublime Text
@@ -202,6 +211,12 @@ run = ['layout floating', 'move-node-to-workspace 1']  # The callback itself
 [[on-window-detected]]
 if.app-id = 'com.apple.finder'
 run = ['layout floating', 'move-node-to-workspace 1']
+
+# mpv 
+[[on-window-detected]]
+if.app-id = 'MPV'
+run = ['layout floating', 'move-node-to-workspace 5']
+
 
 [workspace-to-monitor-force-assignment]
 1 = 1                            # Monitor sequence number from left to right. 1-based indexing

@@ -12,7 +12,8 @@ export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 export ZSH="$HOME/.oh-my-zsh"
 
 #Alias
-
+export VISUAL=nvim;
+export EDITOR=nvim;
 source ~/.bash_alias
 
 # export MANPAGER="sh -c 'col -bx | bat -l man -p'"
@@ -173,7 +174,7 @@ fi
 # source /Users/mac-cip/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /opt/homebrew/share/zsh-navigation-tools/zsh-navigation-tools.plugin.zsh
 
- 
+
 # completion using arrow keys (based on history)
 bindkey '^[[B' history-search-forward
 bindkey '^[[A' history-search-backward

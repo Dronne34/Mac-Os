@@ -1,0 +1,61 @@
+#!/bin/sh
+
+menu() {
+  printf "1. 💻 Visual Studio\n"
+  printf "2. 🌍 Brave Browser\n"
+  printf "3. 🖥️ Ghostty\n"
+  printf "4. ✍️ Sublime Text\n"
+  printf "5. 🔐 Passwords\n"
+  printf "6. ⚙️ Settings\n"
+  printf "7. 🚀 Launchpad\n"
+  printf "8. 🌤️ Weather\n"
+}
+
+main() {
+  choice=$(menu | choose -b ff79c6 -w 48 -n 9 -s 25 2>/dev/null | cut -d. -f1)
+
+  case $choice in
+  1)
+
+    open -n "/Applications/Visual Studio Code.app"
+    break
+    ;;
+  2)
+
+    open -n "/Applications/Brave Browser.app"
+    break
+    ;;
+  3)
+
+    open -n "/Applications/Ghostty.app"
+    break
+    ;;
+  4)
+
+    open -n "/Applications/Sublime Text.app"
+    break
+    ;;
+  5)
+
+    open -n "/System/Applications/Passwords.app"
+    break
+    ;;
+  6)
+
+    open -n "/System/Applications/System Settings.app"
+    break
+    ;;
+  7)
+
+    open -n "/System/Applications/Launchpad.app"
+    break
+    ;;
+  8)
+
+    open -n "/System/Applications/Weather.app"
+    break
+    ;;
+  esac
+}
+
+pkill -f "" | main
