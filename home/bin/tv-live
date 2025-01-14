@@ -17,42 +17,42 @@ main() {
   case $choice in
   1)
 
-    streamlink "https://live3vox.antenaplay.ro/a3free/a3free.m3u8" best -p ffplay   
+    streamlink "https://vod4ro.antenaplay.ro/antena1/2024/12/31/ca4729806fefa1109f899b4780f1dc5ef3fbadb78791e262e9cc2ed95e003d7d_360p-wide.mp4/index.m3u8?starttime=1736788538&endtime=1736795738&source=web&token=-dQ7lTUUnZAWk7w8YvDLRZYy5Tw=" best -p ffplay
     break
     ;;
   2)
 
-    streamlink "" best -p ffplay    
+    streamlink "https://p9.magicplaces.eu/protv/tracks-v1a1/mono.m3u8?remote=no_check_ip&token=3d48a970939f4a801e4b1173fbb50ddfcad6f1e1-b98cade335e16a148100d739dbc0a9fc-1736742306-1736731506" best -p ffplay
     break
     ;;
   3)
 
-    streamlink --title "{author} - {category} - {title}" "" best -p ffplay
+    streamlink --title "{author} - {category} - {title}" "https://p11.magicplaces.eu/discoverysd/tracks-v1a1/mono.m3u8?remote=no_check_ip&token=caee4121396281dac91be2503038bd40001982c4-965539e913fc025e379b034bbabc6bd2-1735854327-1735843527" best -p ffplay
     break
     ;;
   4)
 
-    streamlink --title "{author} - {category} - {title}" "" best -p ffplay
+    streamlink --title "{author} - {category} - {title}" "https://p11.magicplaces.eu/natgeo/tracks-v1a1/mono.m3u8?remote=no_check_ip&token=e5ccbd80b89237b27c9dccbddfe14f9d2c0a5a18-b85cb6e5cbf2322d3d31b42ad52d7850-1735854457-1735843657" best -p ffplay
     break
     ;;
   5)
 
-    streamlink --title "{author} - {category} - {title}" "" best -p ffplay
+    streamlink --title "{author} - {category} - {title}" "https://p11.magicplaces.eu/natgeowildsd/tracks-v1a1/mono.m3u8?remote=no_check_ip&token=492921dc084587dc2a50881eb5d71e34cf7488f3-2da64d245cc6518c3c6019ce7ba6c70c-1735854538-1735843738" best -p ffplay
     break
     ;;
   6)
 
-    streamlink --title "{author} - {category} - {title}" "" best -p ffplay
+    streamlink --title "{author} - {category} - {title}" "https://p11.magicplaces.eu/viasathistorysd/tracks-v1a1/mono.m3u8?remote=no_check_ip&token=261aa64f14efefc3a3fa832f9935cddad93b2f51-96f00ebea0d4266ca264f2d5be20a2a2-1735854760-1735843960" best -p ffplay
     break
     ;;
   7)
 
-    streamlink --title "{author} - {category} - {title}" "" best -p ffplay
+    streamlink --title "{author} - {category} - {title}" "https://p11.magicplaces.eu/filmcafesd/tracks-v1a1/mono.m3u8?remote=no_check_ip&token=eb3e492302b383af687c25d8624df16bdd1cf7f3-5cf18808f510556ac9ba987f413cd6c0-1735855620-1735844820" best -p ffplay
     break
     ;;
   8)
 
-    streamlink --title "{author} - {category} - {title}" "" best -p ffplay
+    streamlink --title "{author} - {category} - {title}" "https://p11.magicplaces.eu/amcsd/tracks-v1a1/mono.m3u8?remote=no_check_ip&token=9358eae6da60157fd9241e2c9438ebb5197b4fa0-26e8a3438d1e04a8482e79ebdfba9ab6-1735855303-1735844503" best -p ffplay
     break
     ;;
   esac

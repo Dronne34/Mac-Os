@@ -1,0 +1,2 @@
+#!/bin/bash
+streamlink --title "{author} - {category} - {title}" https://www.youtube.com/watch?v=jfKfPfyJRdk 480p -p ffplay
