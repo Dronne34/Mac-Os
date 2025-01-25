@@ -42,7 +42,6 @@ packages=(
   font-meslo-lg-nerd-font
   font-noto-color-emoji
   ghostty
-  sublime-text
   vlc
   appstream-glib
   bash
